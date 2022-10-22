@@ -53,19 +53,6 @@ The pacman game I designed has a few extras we weren't asked to implement, but I
 - Added 30 test maps (most of them playable)
 - Restrict ending or resetting the game while pacman is dying
 
-## Gameplay
-
-Here are a few sample gameplays from my favorite maps:
-
-![test](https://user-images.githubusercontent.com/40824677/144236348-16d25b18-083b-4b3d-8e68-1c5a750aadbd.gif)
-
-![run](https://user-images.githubusercontent.com/40824677/144236512-ef823d58-a669-422b-b28d-aa619cf38b09.gif)
-
-![island](https://user-images.githubusercontent.com/40824677/144236536-cf60d7de-06b6-40ef-99f8-6a5e459c7051.gif)
-
-![classic](https://user-images.githubusercontent.com/40824677/144236580-afefb02c-8d9e-4fb4-8003-fc2770fe45dc.gif)
-
-
 ## Installation
 
 ### Cloning the repositories
@@ -117,10 +104,4 @@ Throughout the project, there have been a few roadblocks that needed to be worke
 ## Summary
 This has been my favorite project so far, coding my own pacman clone was so much fun, regargless how flawed it might be :)
 
-August 14th, 2021
-
-<p align="center">
-  <a href="https://github.com/madebypixel02/born2beroot">&#11013;</a>
-  <a href="https://github.com/madebypixel02/42-Madrid-Cursus">&#127968;</a>
-  <a href="https://github.com/madebypixel02/push_swap">&#10145;</a>
-</p>
+August 15th, 2022
