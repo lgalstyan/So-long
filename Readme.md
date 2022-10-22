@@ -36,36 +36,6 @@ The goal is for the player(s) to collect all the collectibles on the map before 
 For the graphics part of the project we used a library called ``minilibx``. It's fairly basic and somewhat limited, but was still fun to use in the project.
 
 
-
-### Part 1: reading the map
-
-In this part of the code I checked that the given map was properly opened, that it had a ``.ber`` filetype, and then continued by reading the file one line at a time with [get_next_line](https://github.com/madebypixel02/get_next_line).
-Once that was done I filled a struct ``t_lay`` with some basic map attributes like number of players, exits, collectibles, number of rows and columns, etc. During the reading process I also created a string containing the entire map, whcih was later useful when creating a matrix with ``ft_split`` with ``\n`` as the separator.
-
-
-
-### Part 2: starting the game
-
-For this part I took the ``t_lay`` and my map matrix to build my main ``t_game`` struct. This struct includes more detailed information about my game state, such a list of pacmans, a list of ghosts, the number of loop repetitions (frames), and other info. From here I initialized a window with the mlx function and started drawing the static elements of the map (walls, spaces and collectibles) on the window. The mlx library, as other graphic libraries, has an infinite loop where the game events happen. From here I check the state of the game to re-print certain elements of the map or to manage special events, such as when Pacman dies or when ghosts are in panic mode.
-The ``mlx`` library has hooks, which essentially link certain events on the computer (keypresses, mouse clicks, etc) with functions we implement. In my case I 'hooked' the end of the game function to pressing the ``x`` button to close the window. Also, I used a key hook to link keypresses with pacman's movements.
-
-
-### Part 3: game mechanics
-
-When the ``ESC``/``Q`` key is pressed, the game ends. If the arrow keys or the ``W``. ``A``, ``S``, ``D`` keys are pressed, every pacman on the map changes its direction and tries to move in that direction. Also, every so often all pacmans will all try to move in the same direction they're headed. This way the arrow/WASD keys just change pacmans' directions to make them move forward till they hit a wall.
-Ghosts behave similarly (they're the first bonus: enemies), but instead of responding the keypress, they use a basic algorithm to find the closest pacman and try to catch it. Whenever a pacman is caught by a ghost, the attribute ``pac_dying`` is set to 1 in the ``t_game`` struct and all pacmans die with a short animation.
-Ghosts load in seven different colors, and each new ghost will have a different color. To do this, I had to load every sprite of every color with the mlx library and assign a new color to every new ghost with ``ghost_number % number_of_colors``, thus rotating through the list of colors when there are more ghosts than available colors.
-
-Lastly, if a pacman reaches an exit and there are no collectibles left, it will be deleted from the list of players. If all pacmans reach the exit, the game ends and the final score is displayed.
-
-
-### Part 4: animations
-
-There are several animations throughout the game (it's the other bonus in the project), from pacman's gobbling animation or ghosts' panic mode to pacman's death animation. They are all animated in a similar way: with linked lists. Every node in the list corresponds to an image of the animation. Every so often a function is called which will move to the next image, and if the last one is found, the node resets to the top of the linked list.
-
-Pacman and ghosts move on the map matrix, which is much smaller than the mlx window. For this reason and to make movement smooth it is interesting to keep a position in the matrix (``pos``) and a position on the window (``win_pos``) for every pacman/ghost, and update the position on the window one pixel at a time until ``pos * sprite_size == win_pos``.
-
-
 ## Extras
 
 The pacman game I designed has a few extras we weren't asked to implement, but I thought would make the overall game experience better. Here's a list of the most relevant additions:
@@ -85,8 +55,6 @@ The pacman game I designed has a few extras we weren't asked to implement, but I
 
 ## Gameplay
 
-There are a total of 30 maps available. See [MAPS.md](https://github.com/madebypixel02/so_long/tree/master/tests/MAPS.md)
-
 Here are a few sample gameplays from my favorite maps:
 
 ![test](https://user-images.githubusercontent.com/40824677/144236348-16d25b18-083b-4b3d-8e68-1c5a750aadbd.gif)
@@ -98,25 +66,15 @@ Here are a few sample gameplays from my favorite maps:
 ![classic](https://user-images.githubusercontent.com/40824677/144236580-afefb02c-8d9e-4fb4-8003-fc2770fe45dc.gif)
 
 
-## Other Maps
-There are 20+ maps (ported from [Machine-Learning-Pacman](https://github.com/madebypixel02/Machine-Learning-Pacman/tree/master/layouts)) to try your skill/luck.
-
-See [Other Maps](https://github.com/madebypixel02/so_long/tree/master/tests/MAPS.md#other-maps)
-
 ## Installation
 
 ### Cloning the repositories
 ```shell
-git clone https://github.com/madebypixel02/so_long.git
+git clone https://github.com/lgalstyan/So-long.git
 cd so_long
 make
+./so_long ./maps/map.ber
 ```
-
-### Installing the MLX library
-
-* ``Linux``
-
-If you're not using a MacOS computer from 42, you'll need to install the libraries manually. Please refer to the [official github](https://github.com/42Paris/minilibx-linux) for more details. To install it, do the following (requires root access):
 
 ```shell
 git clone https://github.com/42Paris/minilibx-linux.git
@@ -137,30 +95,11 @@ sudo cp mlx.h /usr/local/include
 sudo cp libmlx.a /usr/local/lib
 sudo reboot
 ```
-Note: A reboot is necessary to ensure that the ``Xquartz`` is working properly. You can test if it is by running a test example with the command ``xeyes``.
-
-### Installing the manuals
-
-If you want quick access to the mlx manuals, it is recommended that you copy the files from the ``man`` folder in [minilibx-linux](https://github.com/42Paris/minilibx-linux) to your system manuals:
-
-* ``Linux``
-```shell
-sudo cp man/man3/* /usr/share/man/man3/
-```
-Note: Depending on your Linux configuration, to get the manuals working (e.g. ``man mlx``) you will need to individually gzip all the manual files you just copied, e.g. ``sudo gzip /usr/share/man/man3/mlx.3``.
-
-* ``MacOS``
-```shell
-sudo cp man/man3/* /usr/X11/share/man/man3
-```
 
 ### Usage
 
 ```
 make                        compiles so_long executable
-make test MAP={path_to_map} compiles and executes so_long with the specified map
-make play                   compiles and executes a small set of maps sequentially
-make play2                  compiles and executes a much larger set of maps sequentially
 make git                    adds and commits everything, then pushes to upstream branch
 make norminette             runs norminette for all files in the project that need to pass it
 ```
